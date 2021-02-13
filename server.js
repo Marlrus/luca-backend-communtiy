@@ -5,6 +5,7 @@ const http = require("http");
 const enforce = require("express-sslify");
 const mongoose = require("mongoose");
 const questionRoutes = require("./routes/question.routes.js");
+// const { seedDb } = require("./seed");
 
 require("dotenv").config();
 
@@ -44,6 +45,8 @@ mongoose
   )
   .then(() => {
     console.log(`Mongoose Connected to: ${mongoose.connection.name}`);
+    // Uncomment import and fn call to seedDb
+    // seedDb();
   })
   .catch((err) => {
     console.log(`Error: ${err.message}`);

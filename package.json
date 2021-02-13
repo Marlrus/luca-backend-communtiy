@@ -12,6 +12,7 @@
   "description": "Backend test for Luca",
   "main": "server.js",
   "devDependencies": {
+    "faker": "^5.4.0",
     "nodemon": "^2.0.7"
   },
   "scripts": {

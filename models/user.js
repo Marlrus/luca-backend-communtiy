@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema({
   email: String,
   avatar: String,
   courses: [mongoose.Schema.Types.ObjectId],
-  creation_date: { type: Date, default: Date.now },
+  enrollment_date: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model("User", UserSchema);
