@@ -63,7 +63,7 @@ Paginated using cursor pagination, returns questions from newest to oldest.
 }
 ```
 
-#### Response
+#### Response (based on mock response)
 
 ```
 {
@@ -91,5 +91,37 @@ Paginated using cursor pagination, returns questions from newest to oldest.
     },
     ...
   ],
+}
+```
+
+### POST: /question
+
+Create a question based on user id and course_id. In the design there is no course selector for the question, therefore I will default to the only course I created in the database. The request responds with the new created question in order to use it in the front end.
+
+#### Body
+
+```
+{
+  "user_id": <string | required>,
+  "question":<string | required>,
+  "details": <string | required>
+  "course_id": <string | optional | default: user course at 0>,
+}
+```
+
+#### Response (based on mock response)
+
+```
+{
+  "_id": "6027fd4bf13abeeba0b85224",
+  "username": "Laura.Welch41",
+  "user_avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/joe_black/128.jpg",
+  "user_id": "6027fb93e3a522eb6f7061e8",
+  "course_name": "Matemáticas 6º",
+  "course_id": "6027fb93e3a522eb6f7061e7",
+  "question": "¿Cuáles son los múltiplos del 7?",
+  "details": "La verdad no me queda muy claro cuáles son los múltiplos del 7 porque es la tabla de multiplicacion mas complicada.",
+  "creation_date": "2021-02-13T16:24:43.587Z",
+  "__v": 0
 }
 ```
