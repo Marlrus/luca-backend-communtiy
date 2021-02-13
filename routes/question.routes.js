@@ -1,13 +1,15 @@
 const router = require("express").Router({ mergeParams: true });
-const questionController = require("../controllers/question.controlers");
+const questionController = require("../controllers/question.controllers");
 require("../models/course");
 
-router.get("/", questionController.get);
+router.get("/", questionController.list);
 
-router.post("/", questionController.post);
+router.get("/:_id", questionController.show);
 
-router.put("/", questionController.put);
+router.post("/", questionController.create);
 
-router.delete("/", questionController.delete);
+router.put("/:_id", questionController.update);
+
+router.delete("/:_id", questionController.delete);
 
 module.exports = router;

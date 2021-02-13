@@ -1,10 +1,13 @@
 const User = require("../models/user");
 const Question = require("../models/question");
 const { updateModel } = require("../utils/modelUtils");
-const { validateQuestionOwnership } = require("../utils/questionUtils");
+const {
+  validateQuestionOwnership,
+  findQuestionAndUser,
+} = require("../utils/questionUtils");
 require("../models/course");
 
-const get = async (req, res) => {
+const list = async (req, res) => {
   try {
     // Get page and limit from request or default to initial query
     const page = +req.query?.page || 1;
@@ -16,13 +19,30 @@ const get = async (req, res) => {
     };
 
     const questions = await Question.paginate({}, options);
-    res.json(questions);
+    const response = {
+      success: true,
+      data: questions,
+    };
+    res.json(response);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ success: false, error: err.message });
   }
 };
 
-const post = async (req, res) => {
+const show = async (req, res) => {
+  try {
+    const foundQuestion = await Question.findById(req.params._id);
+    const response = {
+      success: true,
+      data: foundQuestion,
+    };
+    res.json(response);
+  } catch (err) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+};
+
+const create = async (req, res) => {
   try {
     const user = await User.findById(req.body.user_id)
       .populate("courses")
@@ -41,20 +61,21 @@ const post = async (req, res) => {
       details,
     };
     const newQuestion = await Question.create(questionData);
-    res.json(newQuestion);
+    const response = { success: true, data: newQuestion };
+    res.json(response);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ success: false, error: err.message });
   }
 };
 
-const put = async (req, res) => {
+const update = async (req, res) => {
   try {
-    const { question_id, user_id, question, details } = req.body;
-    const findQuestion = Question.findById(question_id);
-    const findUser = User.findById(user_id);
-    // Execute queries in parallel
-    const queries = [findQuestion, findUser];
-    const [foundQuestion, foundUser] = await Promise.all(queries);
+    const question_id = req.params._id;
+    const { user_id, question, details } = req.body;
+    const [foundQuestion, foundUser] = await findQuestionAndUser({
+      user_id,
+      question_id,
+    });
 
     // validate ownership becuase there is no auth middleware
     validateQuestionOwnership({ question: foundQuestion, user: foundUser });
@@ -67,35 +88,41 @@ const put = async (req, res) => {
     const updatedQuestion = updateModel(foundQuestion, questionUpdates);
     await updatedQuestion.save();
 
-    res.json(updatedQuestion);
+    const response = { success: true, data: updatedQuestion };
+    res.json(response);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ success: false, error: err.message });
   }
 };
 
 const deleteController = async (req, res) => {
   try {
-    const { question_id, user_id } = req.body;
-    const findQuestion = Question.findById(question_id);
-    const findUser = User.findById(user_id);
-    // Execute queries in parallel
-    const queries = [findQuestion, findUser];
-    const [foundQuestion, foundUser] = await Promise.all(queries);
+    const question_id = req.params._id;
+    const { user_id } = req.body;
+    const [foundQuestion, foundUser] = await findQuestionAndUser({
+      user_id,
+      question_id,
+    });
 
     // Validate ownership
     validateQuestionOwnership({ question: foundQuestion, user: foundUser });
 
     await foundQuestion.delete();
-    res.json({ message: "Comment deleted successfully." });
+    const response = {
+      success: true,
+      message: "Comment deleted successfully.",
+    };
+    res.json(response);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ success: false, error: err.message });
   }
 };
 
 const questionController = {
-  get,
-  post,
-  put,
+  list,
+  show,
+  create,
+  update,
   delete: deleteController,
 };
 
