@@ -81,7 +81,7 @@ Go to the **seed.js** file to change the parameters for the seeding process. The
 
 Once a seed has been created, running seedDb again will not create more seeds becuase it verifies the existance of data.
 
-## Routes
+## Question Routes
 
 ### list: GET: /question
 
@@ -249,5 +249,30 @@ Question id is taken from param string.
 {
   "success": true,
   "message": "Comment deleted successfully."
+}
+```
+
+## User Routes
+
+### get: GET /user
+
+Gets one user from DB to be used as the user while navigating the page. This will mock a login/auth step.
+
+#### Response (Based on mock response)
+
+```json
+{
+  "success": true,
+  "data": {
+    "courses": ["6027fb93e3a522eb6f7061e7"],
+    "_id": "6027fb93e3a522eb6f7061e8",
+    "name": "Luz",
+    "last_name": "Prohaska",
+    "username": "Laura.Welch41",
+    "email": "Alexanne7@gmail.com",
+    "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/joe_black/128.jpg",
+    "enrollment_date": "2021-02-13T16:17:23.331Z",
+    "__v": 0
+  }
 }
 ```

@@ -4,7 +4,8 @@ const bodyParser = require("body-parser");
 const http = require("http");
 const enforce = require("express-sslify");
 const mongoose = require("mongoose");
-const questionRoutes = require("./routes/question.routes.js");
+const questionRoutes = require("./routes/question.routes");
+const userRoutes = require("./routes/user.routes");
 // const { seedDb } = require("./seed");
 
 require("dotenv").config();
@@ -55,3 +56,4 @@ mongoose
 //VIs
 
 app.use("/question", questionRoutes);
+app.use("/user", userRoutes);
