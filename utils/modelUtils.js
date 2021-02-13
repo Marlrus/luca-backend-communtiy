@@ -8,14 +8,6 @@ const updateModel = (model, updates) => {
   return model;
 };
 
-const validateQuestionOwnership = ({ user, question }) => {
-  const questionUserId = question.user_id;
-  if (!questionUserId.equals(user._id)) {
-    throw new Error("Unauthorized operation");
-  }
-};
-
 module.exports = {
   updateModel,
-  validateQuestionOwnership,
 };
