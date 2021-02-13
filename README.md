@@ -1,5 +1,7 @@
 # Backend Repo
 
+To make the repo run locally, I will not store env variables in an env file.
+
 ## Data Models and Relationships
 
 The database that will be used for this backend is MongoDB hosted in MongoDB Atlas.
@@ -45,3 +47,49 @@ Go to the **seed.js** file to change the parameters for the seeding process. The
 - Re-seeding db: Uncomment first lines in seedDb to wipe the DB and create new seed data.
 
 Once a seed has been created, running seedDb again will not create more seeds becuase it verifies the existance of data.
+
+## Routes
+
+### GET: /question
+
+Paginated using cursor pagination, returns questions from newest to oldest.
+
+#### Payload
+
+```
+{
+  "page": <int | optional | default: 1>,
+  "limit": <int | optional | default: 15>,
+}
+```
+
+#### Response
+
+```
+{
+  "totalDocs": 300,
+  "limit": 15,
+  "totalPages": 20,
+  "page": 1,
+  "pagingCounter": 1,
+  "hasPrevPage": false,
+  "hasNextPage": true,
+  "prevPage": null,
+  "nextPage": 2
+  "docs": [
+    {
+      "_id": "6027f99c8337b6e613046a46",
+      "username": "Aracely13",
+      "user_avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/jlsolerdeltoro/128.jpg",
+      "user_id": "6027f763bfeef8dff93ccb21",
+      "course_name": "Matemáticas 6º",
+      "course_id": "6027f763bfeef8dff93ccb20",
+      "question": "Hai?",
+      "details": "Hai is this good",
+      "creation_date": "2021-02-13T16:09:00.381Z",
+      "__v": 0
+    },
+    ...
+  ],
+}
+```

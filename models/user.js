@@ -6,7 +6,7 @@ const UserSchema = new mongoose.Schema({
   username: String,
   email: String,
   avatar: String,
-  courses: [mongoose.Schema.Types.ObjectId],
+  courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
   enrollment_date: { type: Date, default: Date.now },
 });
 
