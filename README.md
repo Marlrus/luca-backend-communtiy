@@ -1,6 +1,23 @@
 # Backend Repo
 
-To make the repo run locally, I will not store env variables in an env file.
+To make the repo run locally, I will not store env variables in an env file. There will be a deprecation warning due to the latest version of MongoDB, however this message is a bug and the mongo team are working on removing it.
+
+## Installing and running
+
+### Requirements
+
+- Node (14.x recommended)
+- Yarn (recommended)
+
+Without yarn, replace commands with npm install, npm run start.
+
+### Installation
+
+`yarn install`
+
+### Running the server
+
+`yarn start`
 
 ## Data Models and Relationships
 

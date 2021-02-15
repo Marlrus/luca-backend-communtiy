@@ -3,7 +3,6 @@ const User = require("../models/user");
 const get = async (_, res) => {
   try {
     const user = await User.findOne();
-    console.log(user);
     res.json({ success: true, data: user });
   } catch (err) {
     res.status(400).json({ success: false, error: err.message });

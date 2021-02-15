@@ -15,7 +15,7 @@ const list = async (req, res) => {
     const options = {
       page,
       limit,
-      sort: { creation_date: "desc" },
+      sort: { creation_date: -1 },
     };
 
     const questions = await Question.paginate({}, options);
