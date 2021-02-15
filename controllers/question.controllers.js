@@ -60,8 +60,11 @@ const create = async (req, res) => {
       question,
       details,
     };
-    const newQuestion = await Question.create(questionData);
-    const response = { success: true, data: newQuestion };
+    await Question.create(questionData);
+    const response = {
+      success: true,
+      message: "Question created successfully.",
+    };
     res.json(response);
   } catch (err) {
     res.status(400).json({ success: false, error: err.message });
@@ -88,7 +91,10 @@ const update = async (req, res) => {
     const updatedQuestion = updateModel(foundQuestion, questionUpdates);
     await updatedQuestion.save();
 
-    const response = { success: true, data: updatedQuestion };
+    const response = {
+      success: true,
+      message: "Question updated successfully.",
+    };
     res.json(response);
   } catch (err) {
     res.status(400).json({ success: false, error: err.message });
@@ -110,7 +116,7 @@ const deleteController = async (req, res) => {
     await foundQuestion.delete();
     const response = {
       success: true,
-      message: "Comment deleted successfully.",
+      message: "Question deleted successfully.",
     };
     res.json(response);
   } catch (err) {

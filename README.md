@@ -19,6 +19,8 @@ Without yarn, replace commands with npm install, npm run start.
 
 `yarn start`
 
+The server will run on localhost 5000. Re-seed with confidence.
+
 ## Data Models and Relationships
 
 The database that will be used for this backend is MongoDB hosted in MongoDB Atlas.
@@ -98,7 +100,7 @@ Go to the **seed.js** file to change the parameters for the seeding process. The
 
 Once a seed has been created, running seedDb again will not create more seeds becuase it verifies the existance of data.
 
-## Question Routes
+## Question Routes /question
 
 ### list: GET: /question
 
@@ -177,7 +179,7 @@ None, handled by param string.
 
 ### create: POST: /question
 
-Create a question based on user id and course_id. In the design there is no course selector for the question, therefore I will default to the only course I created in the database. The request responds with the new created question in order to use it in the front end.
+Creates a question for a user. Since there is one course and no field for course in the design I will fetch the user to validate his existance and then take the course at 0 to create the question.
 
 #### Body
 
@@ -186,7 +188,6 @@ Create a question based on user id and course_id. In the design there is no cour
   "user_id": <string | required>,
   "question":<string | required>,
   "details": <string | required>
-  "course_id": <string | optional | default: user course at 0>,
 }
 ```
 
@@ -195,18 +196,7 @@ Create a question based on user id and course_id. In the design there is no cour
 ```json
 {
   "success": true,
-  "data": {
-    "_id": "60282081689d2747d94e773b",
-    "username": "Laura.Welch41",
-    "user_avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/joe_black/128.jpg",
-    "user_id": "6027fb93e3a522eb6f7061e8",
-    "course_name": "Matemáticas 6º",
-    "course_id": "6027fb93e3a522eb6f7061e7",
-    "question": "¿Cuáles son los múltiplos del 7?",
-    "details": "La verdad no me queda muy claro cuáles son los múltiplos del 7 porque es la tabla de multiplicacion mas complicada.",
-    "creation_date": "2021-02-13T18:54:57.204Z",
-    "__v": 0
-  }
+  "message": "Question created successfully."
 }
 ```
 
@@ -216,14 +206,19 @@ Validates ownership based on data from the frontend. Requires the user_id and qu
 
 #### Body
 
-Question id is taken from param string.
+Question id is taken from param string, which would be taken from the frontend if a question belongs to a user through the show route.
 
 ```json
+// body
 {
   "user_id": <string | required>,
   "question":<string | required>,
   "details": <string | required>
 }
+// params
+{
+  "question_id":<string | required>,
+}
 ```
 
 #### Response
@@ -231,32 +226,24 @@ Question id is taken from param string.
 ```json
 {
   "success": true,
-  "data": {
-    "_id": "60282081689d2747d94e773b",
-    "username": "Laura.Welch41",
-    "user_avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/joe_black/128.jpg",
-    "user_id": "6027fb93e3a522eb6f7061e8",
-    "course_name": "Matemáticas 6º",
-    "course_id": "6027fb93e3a522eb6f7061e7",
-    "question": "¿3Cuáles son los múltiplos del 7?",
-    "details": "3La verdad no me queda muy claro cuáles son los múltiplos del 7 porque es la tabla de multiplicacion mas complicada.",
-    "creation_date": "2021-02-13T18:54:57.204Z",
-    "__v": 0
-  }
+  "message": "Question updated successfully."
 }
 ```
 
 ### delete: DELETE: /question/:\_id
 
-Validates ownership based on data from frontend and deletes a question.
+Validates ownership based on data from frontend and deletes a question. Question id is taken from the param string as well.
 
 #### Body
 
-Question id is taken from param string.
-
 ```json
+// body
 {
   "user_id": <string | required>,
+}
+// params
+{
+  "question_id":<string | required>,
 }
 ```
 
@@ -265,15 +252,15 @@ Question id is taken from param string.
 ```json
 {
   "success": true,
-  "message": "Comment deleted successfully."
+  "message": "Question deleted successfully."
 }
 ```
 
-## User Routes
+## User Routes /user
 
 ### get: GET /user
 
-Gets one user from DB to be used as the user while navigating the page. This will mock a login/auth step.
+Gets one user from DB to be used as the user while navigating the page. This will mock a login/auth step. This data will be used in the POST operation done through the frontend.
 
 #### Response (Based on mock response)
 
